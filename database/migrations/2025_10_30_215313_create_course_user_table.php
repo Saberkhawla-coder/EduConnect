@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->enum('role', ['admin','teacher', 'student'])->default('student');
+        Schema::create('course_user', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained("users")->onDelete('cascade');
+            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('course_user');
     }
 };
